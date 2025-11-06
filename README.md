@@ -1,4 +1,4 @@
 ## Hi I'm Đức Anh 👋
 
-- 🌱 I’m currently a sophomore data science student at hcmiu focusing on statistics, machine learning, and data engineering.
-- ...
+- 🌱 I’m currently a data science student at hcmiu 
+- 🌱 I'am interested on statistics, machine learning, data encineering and AI
