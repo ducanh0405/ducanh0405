@@ -2,4 +2,4 @@
 
 - 🌱 I’m currently a data science student at hcmiu 
 - 🌱 I'am interested on statistics, machine learning, data encineering and AI
-here is my portfolio https://ducanhportfo.netlify.app 
+- 🌱 Here is my portfolio https://ducanhportfo.netlify.app 
