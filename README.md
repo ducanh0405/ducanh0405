@@ -31,16 +31,18 @@ I'm interested in Data Science and Applied ML internship opportunities.
 
 ## 🛠️ Technologies
 
-<!-- Self-contained SVG cards; the narrow-screen version keeps labels readable on phones. -->
+<!-- Transparent SVG cards with GitHub light/dark palettes and a mobile layout. -->
 <picture>
-  <source media="(max-width: 640px)" srcset="./assets/tech-stack-mobile.svg">
-  <img src="./assets/tech-stack.svg" width="1090" alt="Technology cards: ML and modeling - scikit-learn, XGBoost, LightGBM, SHAP, SciPy; Data engineering - pandas, NumPy, PostgreSQL, Neo4j, Redis; Visualization - Matplotlib, Seaborn, Plotly, Jupyter; Languages - Python, TypeScript, JavaScript; Web and APIs - React, Next.js, Tailwind CSS, FastAPI, Node.js, Express; Ship and run - Git, Docker, Supabase, Vite.">
+  <source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/tech-stack-mobile.svg">
+  <source media="(max-width: 640px)" srcset="./assets/tech-stack-mobile-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/tech-stack.svg">
+  <img src="./assets/tech-stack-light.svg" width="1090" alt="Technology cards: ML and modeling - scikit-learn, XGBoost, LightGBM, PyTorch, SciPy; Data engineering - pandas, NumPy, PostgreSQL, Neo4j, MySQL, SQLite; Visualization - Matplotlib, Seaborn, Plotly, Jupyter; Languages - Python, TypeScript, JavaScript, SQL, Java; Web and APIs - React, Next.js, Tailwind CSS, FastAPI, Node.js, Express; Ship and run - Git, Docker, Supabase, Vite, Vercel; LLM - Claude, Codex, Gemini, Harness.">
 </picture>
 
 ## 🌱 Currently learning
 
 - Time-series forecasting and uncertainty estimation with quantile regression.
-- Model evaluation and explainability with SHAP.
+- Model evaluation and explainability.
 
 <!-- Manage pinned repositories in the GitHub profile's "Customize your pins" menu. -->
 <!-- GitHub displays the contribution activity below the profile README automatically. -->
