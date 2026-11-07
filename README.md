@@ -31,7 +31,7 @@ I'm interested in Data Science and Applied ML internship opportunities.
 
 ## 🛠️ Technologies
 
-<!-- Transparent SVG cards with GitHub light/dark palettes and a mobile layout. -->
+<!-- Compact SVG cards with neutral light/dark surfaces and a mobile layout. -->
 <picture>
   <source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/tech-stack-mobile.svg">
   <source media="(max-width: 640px)" srcset="./assets/tech-stack-mobile-light.svg">

@@ -3,12 +3,14 @@
 `tech-stack.svg` is the dark desktop layout (three columns), and
 `tech-stack-mobile.svg` is the dark mobile layout (one column). The matching
 light layouts are `tech-stack-light.svg` and `tech-stack-mobile-light.svg`.
-All layouts end with a full-width LLM row: Claude, Codex, Gemini, and Harness.
+All layouts end with an LLM strip: Claude, Codex, Gemini, and Harness. On desktop,
+the tools sit beside the heading; on mobile they wrap below it.
 
 The profile README uses `<picture>` to select the color scheme and switches to
-the mobile layout below a viewport width of 640px. Card backgrounds are transparent
-so the page shows through; borders, text, and badges use neutral GitHub colors,
-based on [Primer's color system](https://primer.style/product/primitives/color/).
+the mobile layout below a viewport width of 640px. The canvas is transparent;
+cards use subtle charcoal or white surfaces, soft badges without individual
+borders, and restrained category accents. The neutral palette is inspired by
+[Primer's color system](https://primer.style/product/primitives/color/).
 
 Both images are self-contained SVGs with embedded vector paths. They contain no
 scripts, external fonts, external images, or runtime badge-service requests.

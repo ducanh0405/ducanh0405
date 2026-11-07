@@ -13,18 +13,26 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 ICONS = ASSETS / "icons"
 FONT = Path("C:/Windows/Fonts/segoeui.ttf")
-TEXT_FONT = ImageFont.truetype(str(FONT), 16)
-TAG_FONT = ImageFont.truetype(str(FONT), 13)
+TEXT_FONT = ImageFont.truetype(str(FONT), 15)
+TAG_FONT = ImageFont.truetype(str(FONT), 12)
+CARD_WIDTH = 352
+CARD_HEIGHT = 232
+GAP = 16
 
 THEMES = {
     "dark": {
-        "text": "E6EDF3", "muted": "9198A1", "border": "3D444D",
-        "chip": "151B23", "tag": "212830", "accent": "58A6FF",
+        "text": "DCE3EB", "muted": "94A0AF", "border": "293440",
+        "surface": "10161E", "chip": "1B2531", "rule": "25303C",
     },
     "light": {
-        "text": "1F2328", "muted": "59636E", "border": "D1D9E0",
-        "chip": "F6F8FA", "tag": "EFF2F5", "accent": "0969DA",
+        "text": "242D38", "muted": "5D6B7B", "border": "D8DEE6",
+        "surface": "FFFFFF", "chip": "F0F3F6", "rule": "E8ECF0",
     },
+}
+
+CATEGORY_ACCENTS = {
+    "dark": ["7CC9A3", "85B8E5", "DAB77E", "A9B8CC", "7BC9C1", "D9A28D"],
+    "light": ["287B53", "2B73A8", "946821", "526C89", "227D74", "A45F43"],
 }
 
 # label, Simple Icons slug (or an original schematic glyph), display color
@@ -128,16 +136,16 @@ def icon(slug, color, x, y):
         body = "".join(re.findall(r"<path\b[^>]*?\/>", svg))
         if not body:
             raise ValueError(f"Missing path: {slug}")
-    return f'<g transform="translate({x} {y}) scale(0.75)" fill="#{color}" color="#{color}">{body}</g>'
+    return f'<g transform="translate({x} {y}) scale(0.667)" fill="#{color}" color="#{color}">{body}</g>'
 
 
-def text(x, y, value, size=16, color="E6EDF3", weight=400):
+def text(x, y, value, size=15, color="DCE3EB", weight=400):
     return (f'<text x="{x}" y="{y}" fill="#{color}" font-size="{size}" '
             f'font-weight="{weight}">{escape(value)}</text>')
 
 
 def badge_width(label):
-    return round(TEXT_FONT.getlength(label)) + 43
+    return round(TEXT_FONT.getlength(label)) + 41
 
 
 def badge(label, x, y, theme):
@@ -147,41 +155,43 @@ def badge(label, x, y, theme):
     if theme == "light":
         color = LIGHT_ICON_COLORS.get(label, color)
     return [
-        f'<rect x="{x + 0.5}" y="{y + 0.5}" width="{width - 1}" height="34" rx="4" fill="#{palette["chip"]}" stroke="#{palette["border"]}"/>',
-        icon(slug, color, x + 9, y + 8),
-        text(x + 34, y + 23, label, color=palette["text"]),
+        f'<rect x="{x}" y="{y}" width="{width}" height="30" rx="6" fill="#{palette["chip"]}"/>',
+        icon(slug, color, x + 9, y + 7),
+        text(x + 32, y + 20, label, color=palette["text"]),
     ]
 
 
 def card(index, x, y, theme):
     title, subtitle, labels, tags = CARDS[index]
     palette = THEMES[theme]
+    accent = CATEGORY_ACCENTS[theme][index]
     elements = [
         f'<g transform="translate({x} {y})">',
-        f'<rect x="0.5" y="0.5" width="351" height="277" rx="6" fill="none" stroke="#{palette["border"]}"/>',
-        f'<rect x="20" y="23" width="3" height="18" rx="1.5" fill="#{palette["accent"]}"/>',
-        text(32, 38, title, 20, palette["text"], weight=650),
-        text(20, 65, subtitle, 14, palette["muted"]),
+        f'<rect x="0.5" y="0.5" width="{CARD_WIDTH - 1}" height="{CARD_HEIGHT - 1}" rx="10" fill="#{palette["surface"]}" stroke="#{palette["border"]}"/>',
+        f'<rect x="20" y="18" width="26" height="3" rx="1.5" fill="#{accent}"/>',
+        text(20, 47, title, 18, palette["text"], weight=600),
+        text(20, 69, subtitle, 13, palette["muted"]),
     ]
-    bx, by = 20, 85
+    bx, by = 20, 87
     for label in labels:
         width = badge_width(label)
         if bx + width > 332:
-            bx, by = 20, by + 43
-        if by + 35 > 215:
+            bx, by = 20, by + 36
+        if by + 30 > 194:
             raise ValueError(f"Badge overflow: {title}")
         elements.extend(badge(label, bx, by, theme))
-        bx += width + 7
+        bx += width + 6
+    elements.append(f'<path d="M20 202H332" stroke="#{palette["rule"]}"/>')
     tx = 20
-    for tag in tags:
-        width = round(TAG_FONT.getlength(tag)) + 16
+    for tag_index, tag in enumerate(tags):
+        width = round(TAG_FONT.getlength(tag))
         if tx + width > 332:
             raise ValueError(f"Tag overflow: {title}")
-        elements.extend([
-            f'<rect x="{tx}" y="239" width="{width}" height="23" rx="3" fill="#{palette["tag"]}"/>',
-            text(tx + 8, 255, tag, 13, palette["text"]),
-        ])
-        tx += width + 7
+        elements.append(text(tx, 221, tag, 12, palette["muted"]))
+        tx += width + 13
+        if tag_index < len(tags) - 1:
+            elements.append(f'<circle cx="{tx}" cy="217" r="1.5" fill="#{accent}"/>')
+            tx += 13
     elements.append("</g>")
     return "\n".join(elements)
 
@@ -189,19 +199,19 @@ def card(index, x, y, theme):
 def llm_section(width, y, theme):
     palette = THEMES[theme]
     badges = []
-    bx, by = 20, 85
+    wide = width > 640
+    bx, by = (325, 26) if wide else (20, 78)
     for label in LLM_TOOLS:
         if bx + badge_width(label) > width - 22:
-            bx, by = 20, by + 43
+            bx, by = 20, by + 36
         badges.extend(badge(label, bx, by, theme))
-        bx += badge_width(label) + 7
-    height = by + 35 + 20
+        bx += badge_width(label) + 8
+    height = 82 if wide else by + 30 + 20
     elements = [
         f'<g transform="translate(1 {y})">',
-        f'<rect x="0.5" y="0.5" width="{width - 3}" height="{height - 1}" rx="6" fill="none" stroke="#{palette["border"]}"/>',
-        f'<rect x="20" y="23" width="3" height="18" rx="1.5" fill="#{palette["accent"]}"/>',
-        text(32, 38, "LLM", 20, palette["text"], weight=650),
-        text(20, 65, "AI coding tools & harness", 14, palette["muted"]),
+        f'<rect x="0.5" y="0.5" width="{width - 3}" height="{height - 1}" rx="10" fill="#{palette["surface"]}" stroke="#{palette["border"]}"/>',
+        text(20, 34, "LLM", 18, palette["text"], weight=600),
+        text(20, 56, "AI coding tools & harness", 13, palette["muted"]),
         *badges,
         '</g>',
     ]
@@ -210,10 +220,10 @@ def llm_section(width, y, theme):
 
 def render(columns, output, theme):
     rows = (len(CARDS) + columns - 1) // columns
-    width = columns * 352 + (columns - 1) * 16 + 2
-    grid_height = rows * 278 + (rows - 1) * 16 + 2
-    footer, footer_height = llm_section(width, grid_height + 16, theme)
-    height = grid_height + 16 + footer_height + 1
+    width = columns * CARD_WIDTH + (columns - 1) * GAP + 2
+    grid_height = rows * CARD_HEIGHT + (rows - 1) * GAP + 2
+    footer, footer_height = llm_section(width, grid_height + GAP, theme)
+    height = grid_height + GAP + footer_height + 1
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
         '<title id="title">Duc Anh — Technologies</title>',
@@ -221,7 +231,7 @@ def render(columns, output, theme):
         '<g font-family="Segoe UI, Arial, sans-serif">',
     ]
     for index in range(len(CARDS)):
-        parts.append(card(index, 1 + (index % columns) * 368, 1 + (index // columns) * 294, theme))
+        parts.append(card(index, 1 + (index % columns) * (CARD_WIDTH + GAP), 1 + (index // columns) * (CARD_HEIGHT + GAP), theme))
     parts.append(footer)
     parts.extend(["</g>", "</svg>"])
     output.write_text("\n".join(parts) + "\n", encoding="utf-8")
