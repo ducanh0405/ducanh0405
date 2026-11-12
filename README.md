@@ -26,8 +26,8 @@ I'm interested in Data Science and Applied ML internship opportunities.
 | Project | Focus | Explore |
 | --- | --- | --- |
 | **DataStorm / SmartGrocy** | Demand forecasting with XGBoost quantile regression, inventory planning, and BI dashboards. | [Case study](https://ducanhportfo.netlify.app/case-study-smartgrocy.html) |
-| **FashionCart** | AI-assisted fashion marketplace with virtual try-on, recommendation logic, and FastAPI services. | [Case study](https://ducanhportfo.netlify.app/case-study-fashioncart.html) |
-| **TODOxSKILLPATH** | Tasks, goals, and weekly planning in a React/TypeScript application backed by Supabase. | [Case study](https://ducanhportfo.netlify.app/case-study-todoxskillpath.html) |
+| **Threat Triage** | AI-assisted for detecting the virus , malware in the files . | [Case study](https://ducanhportfo.netlify.app/case-study-fashioncart.html) |
+| **Data Pulse** | An FMCG platform for supporting the bussiness in working with the data | [Case study](https://ducanhportfo.netlify.app/case-study-todoxskillpath.html) |
 
 ## 🛠️ Technologies
 
